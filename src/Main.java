@@ -12,7 +12,19 @@ public class Main {
 
     public static void checkLogin (String login) throws WrongLoginException {
         if (login.length() > 20) {
-            throw new WrongLoginException("Неверный логин");
+            throw new WrongLoginException("Слишком длинный логин");
+        }
+
+        char [] loginCharArray = login.toCharArray();
+        // разрешённые символы: 48-57 - цифры, 65-90 - большие буквы, 95 - подчёркивание, 97-122 - маленькие буквы
+
+        for (int i = 0; i < loginCharArray.length; i++) {
+            if (loginCharArray[i] < 48)  {
+                throw new WrongLoginException("Использован символ меньше 48");
+            }
+            if (loginCharArray[i] > 57 && loginCharArray[i] < 65) {
+                throw new WrongLoginException("Недопустимый символ в диапазоне 58 - 64");
+            }
         }
     }
 
@@ -39,7 +51,7 @@ public class Main {
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws WrongLoginException {
         System.out.println("Hello world!");
         authValidation("login                                   ", "password", "password");
 
@@ -47,6 +59,12 @@ public class Main {
         for (symbol=0; symbol < 255; symbol++) {
             System.out.println((int)symbol + " " + symbol);
         }
+
+        // разрешённые символы: 48-57 - цифры, 65-90 - большие буквы, 95 - подчёркивание, 97-122 - маленькие буквы
+
+
+        //checkLogin("1111111jflsl                        ");
+        checkLogin("!>");
     }
 
 
