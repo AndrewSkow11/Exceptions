@@ -30,7 +30,7 @@ public class Main {
     }
 
 
-    public static void checkPassword(String password) throws WrongPasswordException {
+    public static void checkPassword(String password, String confirmPassword) throws WrongPasswordException {
         if (password.length() > 20) {
             throw new WrongPasswordException("Слишком длинный пароль");
         }
@@ -57,18 +57,25 @@ public class Main {
                 throw new WrongPasswordException("Недопустимый символ > 122: " + (int) passwordCharArray[i] + " (" + passwordCharArray[i] + ")");
             }
         }
+
+        if (!password.equals(confirmPassword)) {
+            throw new WrongPasswordException("Пароли не совпадают!");
+        }
+
     }
+
+
 
     public static void authValidation(String login, String password, String confirmPassword) {
         System.out.println("Вызван метод валидации логина и пароля");
         try {
             checkLogin(login);
-            checkPassword(password);
+            checkPassword(password, confirmPassword);
         } catch (WrongLoginException e) {
             System.out.println("Логин более 20 символов или содержит недопустимый символ, попробуйте ещё раз!");
         }
         catch (WrongPasswordException e) {
-            System.out.println("Пароль более 20 символов или содержит недопустимый символ, попробуйте ещё раз!");
+            System.out.println("Пароль более 20 символов или содержит недопустимый символ или подтверждение пароля некорректно, попробуйте ещё раз!");
         }
         finally {
             System.out.println("Длина логина: " + login.length());
@@ -78,9 +85,9 @@ public class Main {
 
     }
 
-    public static void main(String[] args) throws WrongLoginException {
+    public static void main(String[] args) throws WrongLoginException, WrongPasswordException {
         authValidation("login", "password", "password");
-        checkLogin("_jhkl");
+
     }
 
 
